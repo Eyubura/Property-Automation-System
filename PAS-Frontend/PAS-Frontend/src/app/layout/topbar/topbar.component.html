@@ -1,0 +1,32 @@
+<header class="topbar">
+  <div class="t-left">
+    <button class="icon-btn hide-mobile" type="button" title="Toggle sidebar" aria-label="Toggle sidebar" (click)="toggleSidebar.emit()"><i class="pi pi-bars"></i></button>
+    <button class="icon-btn show-mobile" type="button" title="Open menu" aria-label="Open menu" (click)="toggleMobile.emit()"><i class="pi pi-bars"></i></button>
+    <span class="t-brand">PAS — Property & Asset System</span>
+  </div>
+  <div class="t-right">
+    <a routerLink="/notifications" class="icon-btn" title="Notifications" aria-label="Notifications"><i class="pi pi-bell"></i></a>
+    <div class="u-wrap">
+      <button class="u-btn" type="button" title="User menu" aria-label="User menu" (click)="showMenu=!showMenu">
+        <div class="u-av">{{ currentUser?.fullName?.charAt(0) ?? 'U' }}</div>
+        <span class="u-name">{{ currentUser?.fullName ?? 'User' }}</span>
+        <i class="pi pi-chevron-down chevron-sm"></i>
+      </button>
+      <div class="u-drop" *ngIf="showMenu">
+        <div class="ud-info">
+          <div class="ud-name">{{ currentUser?.fullName }}</div>
+          <div class="ud-email">{{ currentUser?.email }}</div>
+          <span class="ud-role">{{ currentUser?.roles?.[0] }}</span>
+        </div>
+        <hr class="u-sep">
+        <a routerLink="/change-password" class="ud-item" (click)="showMenu=false">
+          <i class="pi pi-key"></i> Change Password
+        </a>
+        <button class="ud-item danger" type="button" title="Sign out" aria-label="Sign out" (click)="logout()">
+          <i class="pi pi-sign-out"></i> Sign Out
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+<div class="t-overlay" *ngIf="showMenu" (click)="showMenu=false"></div>

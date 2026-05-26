@@ -1,0 +1,55 @@
+<div class="page-header">
+  <div class="page-header-left"><h1>Inventory</h1><p>Manage stock and inventory items</p></div>
+  <div class="page-header-actions">
+    <button class="btn btn-primary" (click)="open()"><i class="pi pi-plus"></i> Add Item</button>
+  </div>
+</div>
+<div class="card">
+  <div class="toolbar">
+    <div class="search-bar"><i class="pi pi-search"></i><input [(ngModel)]="search" (ngModelChange)="filter()" placeholder="Search inventory..." name="s"></div>
+    <button class="btn btn-outline btn-sm" (click)="load()"><i class="pi pi-refresh"></i></button>
+  </div>
+  <div class="loading-state" *ngIf="loading"><div class="spinner"></div><p>Loading...</p></div>
+  <div class="error-state" *ngIf="error && !loading"><i class="pi pi-exclamation-circle"></i>{{ error }}</div>
+  <div class="table-wrap" *ngIf="!loading && !error">
+    <table>
+      <thead><tr><th>Code</th><th>Name</th><th>Category</th><th>Qty</th><th>Min Qty</th><th>Unit</th><th>Stock</th><th>Actions</th></tr></thead>
+      <tbody>
+        <tr *ngFor="let i of filtered">
+          <td><code>{{ i.itemCode }}</code></td>
+          <td><strong>{{ i.name }}</strong></td>
+          <td>{{ i.category }}</td>
+          <td>{{ i.quantity }}</td>
+          <td>{{ i.minimumQuantity }}</td>
+          <td>{{ i.unit }}</td>
+          <td><span class="badge" [class.badge-danger]="isLow(i)" [class.badge-success]="!isLow(i)">{{ isLow(i)?'Low Stock':'OK' }}</span></td>
+          <td><button class="btn btn-ghost" title="Delete" (click)="delete(i.id,i.name)"><i class="pi pi-trash delete-icon"></i></button></td>
+        </tr>
+        <tr *ngIf="filtered.length===0"><td colspan="8"><div class="empty-state"><i class="pi pi-box"></i><h3>No inventory items found</h3></div></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="modal-overlay" *ngIf="showModal">
+  <div class="modal">
+    <div class="modal-header"><h2><i class="pi pi-box"></i> Add Inventory Item</h2><button class="close-btn" (click)="showModal=false">×</button></div>
+    <div class="modal-body">
+      <div class="error-state" *ngIf="modalError"><i class="pi pi-exclamation-circle"></i>{{ modalError }}</div>
+      <div class="form-grid">
+        <div class="form-group"><label>Item Code</label><input [(ngModel)]="form.itemCode" name="ic" placeholder="ITM-001"></div>
+        <div class="form-group"><label>Name *</label><input [(ngModel)]="form.name" name="n" placeholder="Item name" required></div>
+        <div class="form-group"><label>Category</label><input [(ngModel)]="form.category" name="cat" placeholder="Category"></div>
+        <div class="form-group"><label>Unit</label><input [(ngModel)]="form.unit" name="u" placeholder="pcs / kg / ltr"></div>
+        <div class="form-group"><label>Quantity</label><input [(ngModel)]="form.quantity" name="qty" type="number" min="0" placeholder="0"></div>
+        <div class="form-group"><label>Min Quantity</label><input [(ngModel)]="form.minimumQuantity" name="mq" type="number" min="0" placeholder="0"></div>
+        <div class="form-group"><label>Location</label><input [(ngModel)]="form.location" name="loc" placeholder="Store location"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" (click)="showModal=false">Cancel</button>
+      <button class="btn btn-primary" (click)="save()" [disabled]="submitting">
+        <i class="pi pi-spin pi-spinner" *ngIf="submitting"></i>{{ submitting?'Saving...':'Save Item' }}
+      </button>
+    </div>
+  </div>
+</div>

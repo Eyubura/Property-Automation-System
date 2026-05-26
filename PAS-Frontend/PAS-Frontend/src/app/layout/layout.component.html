@@ -1,0 +1,9 @@
+<div class="layout" [class.collapsed]="!sidebarOpen">
+  <app-sidebar [open]="sidebarOpen" [mobileOpen]="mobileOpen" (closeMobile)="closeMobile()" />
+  <div class="main-area">
+    <app-topbar (toggleSidebar)="toggleSidebar()" (toggleMobile)="toggleMobile()" />
+    <main class="page-content">
+      <router-outlet />
+    </main>
+  </div>
+</div>

@@ -1,0 +1,50 @@
+<div class="page-header">
+  <div class="page-header-left"><h1>Transfer Records</h1><p>Asset and inventory transfer history</p></div>
+  <div class="page-header-actions">
+    <button class="btn btn-outline btn-sm" (click)="load()"><i class="pi pi-refresh"></i> Refresh</button>
+  </div>
+</div>
+<div class="card">
+  <div class="toolbar">
+    <div class="search-bar">
+      <i class="pi pi-search"></i>
+      <input [(ngModel)]="search" (ngModelChange)="filter()" placeholder="Search transfers..." name="s">
+    </div>
+  </div>
+  <div class="loading-state" *ngIf="loading"><div class="spinner"></div><p>Loading...</p></div>
+  <div class="error-state" *ngIf="error && !loading"><i class="pi pi-exclamation-circle"></i>{{ error }}</div>
+  <div class="table-wrap" *ngIf="!loading && !error">
+    <table>
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>From Location</th>
+          <th>To Location</th>
+          <th>Quantity</th>
+          <th>Status</th>
+          <th>Transfer Date</th>
+          <th>Reason</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let i of filtered">
+          <td><strong>{{ i.itemName ?? '—' }}</strong></td>
+          <td>{{ i.fromLocation ?? '—' }}</td>
+          <td>{{ i.toLocation ?? '—' }}</td>
+          <td>{{ i.quantity ?? '—' }}</td>
+          <td><span class="badge" [ngClass]="statusClass(i.status)">{{ i.status }}</span></td>
+          <td>{{ i.transferDate | date:'mediumDate' }}</td>
+          <td>{{ i.reason ?? '—' }}</td>
+        </tr>
+        <tr *ngIf="filtered.length === 0">
+          <td colspan="7">
+            <div class="empty-state">
+              <i class="pi pi-arrows-h"></i>
+              <h3>No transfer records found</h3>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

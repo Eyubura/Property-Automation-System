@@ -1,0 +1,47 @@
+<div class="page-header">
+  <div class="page-header-left"><h1>Warehouses</h1><p>Manage warehouses and storage locations</p></div>
+  <div class="page-header-actions">
+    <button class="btn btn-primary" (click)="showModal=true; form={warehouseName:'',locationCode:'',description:'',capacity:0}">
+      <i class="pi pi-plus"></i> Add Warehouse
+    </button>
+  </div>
+</div>
+<div class="card">
+  <div class="toolbar">
+    <div class="search-bar"><i class="pi pi-search"></i><input [(ngModel)]="search" (ngModelChange)="applyFilter()" placeholder="Search warehouses..." name="s"></div>
+  </div>
+  <div class="loading-state" *ngIf="loading"><div class="spinner"></div><p>Loading...</p></div>
+  <div class="error-state" *ngIf="error && !loading"><i class="pi pi-exclamation-circle"></i>{{error}}</div>
+  <div class="table-wrap" *ngIf="!loading && !error">
+    <table>
+      <thead><tr><th>Warehouse Name</th><th>Location Code</th><th>Capacity</th><th>Description</th><th>Actions</th></tr></thead>
+      <tbody>
+        <tr *ngFor="let item of filtered">
+          <td><strong>{{item.warehouseName}}</strong></td>
+          <td><code>{{item.locationCode}}</code></td>
+          <td>{{item.capacity ?? '—'}}</td>
+          <td>{{item.description ?? '—'}}</td>
+          <td><button class="btn btn-ghost" title="Delete" (click)="delete(item.id)"><i class="pi pi-trash delete-icon"></i></button></td>
+        </tr>
+        <tr *ngIf="filtered.length===0"><td colspan="5"><div class="empty-state"><i class="pi pi-warehouse"></i><h3>No warehouses found</h3></div></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="modal-overlay" *ngIf="showModal">
+  <div class="modal">
+    <div class="modal-header"><h2><i class="pi pi-warehouse"></i> Add Warehouse</h2><button class="close-btn" (click)="showModal=false">×</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label>Warehouse Name</label><input [(ngModel)]="form.warehouseName" placeholder="Warehouse name" name="wn"></div>
+        <div class="form-group"><label>Location Code</label><input [(ngModel)]="form.locationCode" placeholder="WH-001" name="lc"></div>
+        <div class="form-group"><label>Capacity</label><input [(ngModel)]="form.capacity" type="number" min="0" name="cap" placeholder="0"></div>
+        <div class="form-group"><label>Description</label><input [(ngModel)]="form.description" placeholder="Description" name="desc"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" (click)="showModal=false">Cancel</button>
+      <button class="btn btn-primary" (click)="save()" [disabled]="submitting">{{submitting ? 'Saving...' : 'Save Warehouse'}}</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+.notif-list{display:flex;flex-direction:column;}
+.notif-item{display:flex;align-items:flex-start;gap:1rem;padding:1rem 1.25rem;border-bottom:1px solid var(--border);transition:background .15s;
+  &:last-child{border-bottom:none;} &:hover{background:var(--surface-2);} &.unread{border-left:3px solid var(--primary);background:#EFF6FF;}}
+.notif-icon{width:36px;height:36px;border-radius:50%;background:var(--primary-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;i{color:var(--primary);font-size:15px;}}
+.notif-body{flex:1;}
+.notif-title{font-weight:600;font-size:14px;color:var(--text-primary);}
+.notif-msg{font-size:13px;color:var(--text-secondary);margin-top:.2rem;}
+.notif-time{font-size:12px;color:var(--text-muted);margin-top:.375rem;}

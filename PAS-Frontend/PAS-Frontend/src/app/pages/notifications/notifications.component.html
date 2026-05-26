@@ -1,0 +1,25 @@
+<div class="page-header">
+  <div class="page-header-left"><h1>Notifications</h1><p>System alerts and messages</p></div>
+  <div class="page-header-actions">
+    <button class="btn btn-outline" (click)="markAll()"><i class="pi pi-check-square"></i> Mark All Read</button>
+    <button class="btn btn-outline btn-sm" (click)="load()"><i class="pi pi-refresh"></i></button>
+  </div>
+</div>
+<div class="card" style="padding:0">
+  <div class="loading-state" *ngIf="loading"><div class="spinner"></div><p>Loading...</p></div>
+  <div class="error-state" style="margin:1rem" *ngIf="error && !loading"><i class="pi pi-exclamation-circle"></i>{{ error }}</div>
+  <div class="notif-list" *ngIf="!loading && !error">
+    <div class="notif-item" *ngFor="let n of items" [class.unread]="!n.isRead">
+      <div class="notif-icon"><i [class]="icon(n.type)"></i></div>
+      <div class="notif-body">
+        <div class="notif-title">{{ n.title }}</div>
+        <div class="notif-msg">{{ n.message }}</div>
+        <div class="notif-time">{{ n.createdAt | date:'medium' }}</div>
+      </div>
+      <span class="badge" [ngClass]="typeClass(n.type)">{{ n.type }}</span>
+    </div>
+    <div class="empty-state" *ngIf="items.length===0" style="padding:3rem">
+      <i class="pi pi-bell-slash"></i><h3>No notifications</h3>
+    </div>
+  </div>
+</div>

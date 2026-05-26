@@ -1,0 +1,105 @@
+<div class="dashboard">
+  <div class="page-header">
+    <div class="page-header-left">
+      <h1>{{ greeting }}, {{ firstName }} 👋</h1>
+      <p>Here's what's happening in your system — {{ today | date:'EEEE, MMMM d, y' }}</p>
+    </div>
+    <div class="page-header-actions">
+      <button class="btn btn-outline btn-sm" (click)="load()">
+        <i class="pi pi-refresh"></i> Refresh
+      </button>
+    </div>
+  </div>
+
+  <div class="loading-state" *ngIf="loading">
+    <div class="spinner"></div><p>Loading dashboard...</p>
+  </div>
+
+  <div class="error-state" *ngIf="error && !loading">
+    <i class="pi pi-exclamation-circle"></i> {{ error }}
+    <button class="btn btn-sm btn-outline error-retry" (click)="load()">Retry</button>
+  </div>
+
+  <ng-container *ngIf="!loading && !error">
+    <div class="stats-grid">
+      <div class="stat-card" routerLink="/properties">
+        <div class="stat-icon blue"><i class="pi pi-building"></i></div>
+        <div class="stat-body">
+          <div class="stat-value">{{ stats?.totalProperties ?? 0 }}</div>
+          <div class="stat-label">Total Properties</div>
+        </div>
+      </div>
+      <div class="stat-card" routerLink="/employees">
+        <div class="stat-icon green"><i class="pi pi-users"></i></div>
+        <div class="stat-body">
+          <div class="stat-value">{{ stats?.totalEmployees ?? 0 }}</div>
+          <div class="stat-label">Employees</div>
+        </div>
+      </div>
+      <div class="stat-card" routerLink="/inventory">
+        <div class="stat-icon orange"><i class="pi pi-box"></i></div>
+        <div class="stat-body">
+          <div class="stat-value">{{ stats?.totalInventoryItems ?? 0 }}</div>
+          <div class="stat-label">Inventory Items</div>
+        </div>
+      </div>
+      <div class="stat-card" routerLink="/warehouses">
+        <div class="stat-icon info"><i class="pi pi-warehouse"></i></div>
+        <div class="stat-body">
+          <div class="stat-value">{{ stats?.totalWarehouses ?? 0 }}</div>
+          <div class="stat-label">Warehouses</div>
+        </div>
+      </div>
+      <div class="stat-card" routerLink="/inspections">
+        <div class="stat-icon red"><i class="pi pi-search"></i></div>
+        <div class="stat-body">
+          <div class="stat-value">{{ stats?.pendingInspections ?? 0 }}</div>
+          <div class="stat-label">Pending Inspections</div>
+        </div>
+      </div>
+      <div class="stat-card" routerLink="/suppliers">
+        <div class="stat-icon info"><i class="pi pi-truck"></i></div>
+        <div class="stat-body">
+          <div class="stat-value">{{ stats?.totalSuppliers ?? 0 }}</div>
+          <div class="stat-label">Suppliers</div>
+        </div>
+      </div>
+      <div class="stat-card" routerLink="/notifications">
+        <div class="stat-icon purple"><i class="pi pi-bell"></i></div>
+        <div class="stat-body">
+          <div class="stat-value">{{ stats?.unreadNotifications ?? 0 }}</div>
+          <div class="stat-label">Notifications</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dash-bottom">
+      <div class="card">
+        <div class="card-title"><i class="pi pi-bolt"></i> Quick Actions</div>
+        <div class="quick-grid">
+          <a routerLink="/properties" class="qa-item">
+            <div class="qa-icon blue"><i class="pi pi-building"></i></div><span>Properties</span>
+          </a>
+          <a routerLink="/employees" class="qa-item">
+            <div class="qa-icon green"><i class="pi pi-users"></i></div><span>Employees</span>
+          </a>
+          <a routerLink="/inventory" class="qa-item">
+            <div class="qa-icon orange"><i class="pi pi-box"></i></div><span>Inventory</span>
+          </a>
+          <a routerLink="/warehouses" class="qa-item">
+            <div class="qa-icon info"><i class="pi pi-warehouse"></i></div><span>Warehouses</span>
+          </a>
+          <a routerLink="/inspections" class="qa-item">
+            <div class="qa-icon red"><i class="pi pi-search"></i></div><span>Inspections</span>
+          </a>
+          <a routerLink="/suppliers" class="qa-item">
+            <div class="qa-icon info"><i class="pi pi-truck"></i></div><span>Suppliers</span>
+          </a>
+          <a routerLink="/notifications" class="qa-item">
+            <div class="qa-icon purple"><i class="pi pi-bell"></i></div><span>Notifications</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

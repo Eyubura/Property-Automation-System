@@ -1,0 +1,37 @@
+<div class="sidebar-overlay" *ngIf="mobileOpen" (click)="closeMobile.emit()"></div>
+
+<aside class="sidebar" [class.collapsed]="!open" [class.mobile-open]="mobileOpen">
+  <div class="s-logo">
+    <div class="logo-box">
+      <img *ngIf="!logoError" src="assets/images/africom-logo.png" alt="AFRICOM" (error)="onImgError()">
+      <span *ngIf="logoError" class="logo-letter">A</span>
+    </div>
+    <div class="logo-txt" *ngIf="open">
+      <div class="l-name">AFRICOM</div>
+      <div class="l-sub">PAS System</div>
+    </div>
+  </div>
+
+  <nav class="s-nav">
+    <ng-container *ngFor="let section of visibleSections">
+      <div class="s-section" *ngIf="open">{{ section.title }}</div>
+      <a *ngFor="let item of section.items"
+         [routerLink]="item.route"
+         routerLinkActive="active"
+         class="s-item"
+         [title]="item.label"
+         (click)="nav(item)">
+        <i [class]="item.icon"></i>
+        <span *ngIf="open">{{ item.label }}</span>
+      </a>
+    </ng-container>
+  </nav>
+
+  <div class="s-footer" *ngIf="currentUser && open">
+    <div class="sf-avatar">{{ currentUser.fullName?.charAt(0) ?? 'U' }}</div>
+    <div class="sf-info">
+      <div class="sf-name">{{ currentUser.fullName }}</div>
+      <div class="sf-role">{{ currentUser.roles?.[0] }}</div>
+    </div>
+  </div>
+</aside>

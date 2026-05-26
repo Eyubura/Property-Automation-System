@@ -1,0 +1,42 @@
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
+
+@Component({ selector:'app-properties', standalone:true, imports:[CommonModule,FormsModule], templateUrl:'./properties.component.html', styleUrl:'./properties.component.scss' })
+export class PropertiesComponent implements OnInit {
+  items:any[]=[]; filtered:any[]=[]; loading=true; error=''; search='';
+  showModal=false; submitting=false; modalError='';
+  conditions=['New','Good','Fair','Poor','Damaged'];
+  form:any={propertyCode:'',name:'',description:'',category:'',condition:'Good',location:''};
+
+  constructor(private http:HttpClient){}
+  ngOnInit(){ this.load(); }
+
+  load(){
+    this.loading=true; this.error='';
+    this.http.get<any>(`${environment.apiUrl}/properties`).subscribe({
+      next:res=>{ this.loading=false; this.items=res?.data?.items??res?.data??[]; this.filter(); },
+      error:err=>{ this.loading=false; this.error=err?.userMessage||'Failed to load.'; }
+    });
+  }
+
+  filter(){ const q=this.search.toLowerCase(); this.filtered=!q?[...this.items]:this.items.filter(p=>`${p.name} ${p.propertyCode} ${p.category}`.toLowerCase().includes(q)); }
+
+  open(){ this.form={propertyCode:'',name:'',description:'',category:'',condition:'Good',location:''}; this.modalError=''; this.showModal=true; }
+
+  save(){
+    if(!this.form.name?.trim()){ this.modalError='Property name is required.'; return; }
+    this.submitting=true; this.modalError='';
+    this.http.post<any>(`${environment.apiUrl}/properties`,this.form).subscribe({
+      next:res=>{ this.submitting=false; if(res?.succeeded!==false){this.showModal=false;this.load();}else this.modalError=res?.message||'Failed.'; },
+      error:err=>{ this.submitting=false; this.modalError=err?.userMessage||'Failed to save.'; }
+    });
+  }
+
+  delete(id:string,name:string){
+    if(!confirm(`Delete "${name}"?`)) return;
+    this.http.delete<any>(`${environment.apiUrl}/properties/${id}`).subscribe({ next:()=>this.load(), error:err=>this.error=err?.userMessage||'Failed.' });
+  }
+}

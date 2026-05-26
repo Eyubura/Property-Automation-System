@@ -1,0 +1,7 @@
+.layout {
+  display: flex; min-height: 100vh;
+  .main-area { flex:1; display:flex; flex-direction:column; margin-left:var(--sidebar-width); transition:margin-left .3s; min-width:0; }
+  &.collapsed .main-area { margin-left:72px; }
+  .page-content { flex:1; padding:2rem; overflow-y:auto; }
+}
+@media(max-width:768px){ .layout .main-area { margin-left:0 !important; } .layout .page-content { padding:1rem; } }

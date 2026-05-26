@@ -1,0 +1,77 @@
+<div class="login-page">
+  <div class="login-left">
+    <div class="ll-brand">
+      <div class="ll-logo">
+        <img src="assets/images/africom-logo.png" alt="AFRICOM"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="ll-letter is-hidden">A</span>
+      </div>
+      <div>
+        <div class="ll-name">AFRICOM Technologies</div>
+        <div class="ll-tag">Property & Asset Management</div>
+      </div>
+    </div>
+    <div class="ll-hero">
+      <h1>Manage assets<br>with precision.</h1>
+      <p>Complete enterprise solution for property tracking, inventory control, and asset lifecycle management.</p>
+    </div>
+    <div class="ll-features">
+      <div class="lf-item"><div class="lf-icon"><i class="pi pi-building"></i></div><span>Property tracking</span></div>
+      <div class="lf-item"><div class="lf-icon"><i class="pi pi-box"></i></div><span>Inventory management</span></div>
+      <div class="lf-item"><div class="lf-icon"><i class="pi pi-users"></i></div><span>Employee management</span></div>
+      <div class="lf-item"><div class="lf-icon"><i class="pi pi-chart-bar"></i></div><span>Real-time reports</span></div>
+    </div>
+  </div>
+
+  <div class="login-right">
+    <div class="login-card">
+      <div class="lc-head">
+        <h2>Welcome back</h2>
+        <p>Sign in to your PAS account</p>
+      </div>
+
+      <div class="err-box" *ngIf="error">
+        <i class="pi pi-exclamation-circle"></i> {{ error }}
+      </div>
+
+      <form (ngSubmit)="login()" novalidate>
+        <div class="form-group">
+          <label for="uname">Username or Email</label>
+          <div class="inp-wrap">
+            <i class="pi pi-user inp-icon"></i>
+            <input id="uname" type="text" [(ngModel)]="username" name="username"
+                   placeholder="Enter your username" autocomplete="username">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="pw">Password</label>
+          <div class="inp-wrap">
+            <i class="pi pi-lock inp-icon"></i>
+            <input id="pw" [type]="showPass?'text':'password'" [(ngModel)]="password" name="password"
+                   placeholder="Enter your password" autocomplete="current-password">
+            <button type="button" class="inp-eye" title="Show password" aria-label="Show password" (click)="showPass=!showPass">
+              <i [class]="showPass?'pi pi-eye-slash':'pi pi-eye'"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="lc-row">
+          <label class="chk-label">
+            <input type="checkbox" [(ngModel)]="rememberMe" name="rm">
+            <span>Remember me</span>
+          </label>
+          <a routerLink="/auth/forgot-password" class="forgot-lnk">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="btn-login" [disabled]="loading">
+          <span *ngIf="loading" class="spin-sm"></span>
+          <span>{{ loading ? 'Signing in...' : 'Sign In' }}</span>
+          <i class="pi pi-arrow-right" *ngIf="!loading"></i>
+        </button>
+      </form>
+
+      <div class="lc-foot">AFRICOM Technologies PLC &copy; {{ year }}</div>
+    </div>
+  </div>
+</div>
